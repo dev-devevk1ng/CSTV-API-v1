@@ -1,0 +1,4 @@
+organizar Tables e Schemas do banco de dados em pastas distintas, utilizando o comando Scaffold-DbContext do Entity Framework Core.
+
+Scaffold-DbContext "Name=DefaultConnection" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/Player -Context CSTVContext -DataAnnotations -Schemas Player
+Scaffold-DbContext "Name=DefaultConnection" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/Team -Context CSTVContext -DataAnnotations -Schemas Team
