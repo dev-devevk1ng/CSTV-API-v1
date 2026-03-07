@@ -15,7 +15,7 @@ namespace CSTV_v1.Models.Player
         public int Id { get; set; }
 
         [Required]
-        public int PlayerId { get; set; } // FK para Player
+        public Guid PlayerId { get; set; } // FK para Player
 
         [Required, MaxLength(30)]
         public string FirstName { get; set; } = null!;

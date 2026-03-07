@@ -42,7 +42,7 @@ namespace CSTV_v1.Services.Player
                 return response;
             }
         }
-        public async Task<ResponseModel<PlayerModel>> GetPlayerById(int PlayerId)
+        public async Task<ResponseModel<PlayerModel>> GetPlayerById(Guid PlayerId)
         {
             ResponseModel<PlayerModel> response = new ResponseModel<PlayerModel>();
             try
@@ -62,6 +62,33 @@ namespace CSTV_v1.Services.Player
             }
             catch (Exception ex)
             {
+                response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<List<PlayerModel>>> GetPlayerByNickname(string nickname)
+        {
+            ResponseModel<List<PlayerModel>> response = new ResponseModel<List<PlayerModel>>();
+            try
+            {
+                var players = await _context.PlayerPlayer.Where(x => x.Nickname == nickname).ToListAsync();
+                if (players == null)
+                {
+                    response.Message = "nenhum player encontrado!";
+                }
+                else
+                {
+                    response.Message = players.Count() + "player(s) encontrado(s)!";
+                }
+
+                response.Dados = players;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+
                 response.Message = ex.Message;
                 response.Status = false;
                 return response;
@@ -95,7 +122,61 @@ namespace CSTV_v1.Services.Player
                 return response;
             }
         }
+        
+        public async Task<ResponseModel<PlayerModel>> EditPlayer(EditPlayerDTO EditPlayerDTO)
+        {
+            ResponseModel<PlayerModel> response = new ResponseModel<PlayerModel>();
+            try
+            {
+                var player = await _context.PlayerPlayer.FirstOrDefaultAsync(x => x.Id == EditPlayerDTO.Id);
+                 if (player == null)
+                {
+                    response.Message = "Player not found!";
+                    return response;
+                }
 
+                player.Nickname = EditPlayerDTO.Nickname;
+                _context.Update(player);
+                await _context.SaveChangesAsync();
+
+                response.Dados = player;
+                response.Message = "Player edited";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        
+        public async Task<ResponseModel<PlayerModel>> RemovePlayer(Guid PlayerId)
+        {
+            ResponseModel<PlayerModel> response = new ResponseModel<PlayerModel>();
+            try
+            {
+                var player = await _context.PlayerPlayer.FirstOrDefaultAsync(x => x.Id == PlayerId);
+                if (player == null)
+                {
+                    response.Message = "Player not found!";
+                    return response;
+                }
+
+                _context.Remove(player);
+                await _context.SaveChangesAsync();
+
+                response.Dados = player;
+                response.Message = "Player deleted";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
         
     }
 }

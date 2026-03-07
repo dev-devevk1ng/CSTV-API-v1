@@ -17,7 +17,10 @@ namespace CSTV_v1.Services.Player
     public interface IPlayerInterface
     {
         Task<ResponseModel<List<PlayerModel>>> GetPlayerList();
-        Task<ResponseModel<PlayerModel>> GetPlayerById(int PlayerId);
+        Task<ResponseModel<PlayerModel>> GetPlayerById(Guid PlayerId);
+        Task<ResponseModel<List<PlayerModel>>> GetPlayerByNickname(string Nickname);
         Task<ResponseModel<PlayerModel>> CreatePlayer(CreatePlayerDTO PlayerDTO);
+        Task<ResponseModel<PlayerModel>> EditPlayer(EditPlayerDTO EditPlayerDTO);
+        Task<ResponseModel<PlayerModel>> RemovePlayer(Guid PlayerId);
     }
 }

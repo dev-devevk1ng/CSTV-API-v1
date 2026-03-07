@@ -36,16 +36,37 @@ namespace CSTV_v1.Controllers.Player
         }
 
         [HttpGet("GetPlayerById/{PlayerId}")]
-        public async Task<ActionResult<ResponseModel<PlayerModel>>> GetPlayerById(int PlayerId)
+        public async Task<ActionResult<ResponseModel<PlayerModel>>> GetPlayerById(Guid PlayerId)
         {
             var player = await _playerInterface.GetPlayerById(PlayerId);
             return Ok(player);
+        }
+
+        [HttpGet("GetPlayerByNickname/{Nickname}")]
+        public async Task<ActionResult<ResponseModel<PlayerModel>>> GetPlayerById(string Nickname)
+        {
+            var players = await _playerInterface.GetPlayerByNickname(Nickname);
+            return Ok(players);
         }
 
         [HttpPost("AddPlayer")]
         public async Task<ActionResult<ResponseModel<PlayerModel>>> CreatePlayer(CreatePlayerDTO playerDTO)
         {
             var response = await _playerInterface.CreatePlayer(playerDTO);
+            return Ok(response);
+        }
+
+        [HttpPut("EditPlayer")]
+        public async Task<ActionResult<ResponseModel<PlayerModel>>> EditPlayer(EditPlayerDTO PlayerId)
+        {
+            var response = await _playerInterface.EditPlayer(PlayerId);
+            return Ok(response);
+        }
+        
+        [HttpDelete("RemovePlayer/{PlayerId}")]
+        public async Task<ActionResult<ResponseModel<PlayerModel>>> RemovePlayer(Guid PlayerId)
+        {
+            var response = await _playerInterface.RemovePlayer(PlayerId);
             return Ok(response);
         }
     }

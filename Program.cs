@@ -1,5 +1,9 @@
 /*
-    Date 2 Mar 202
+    Date 2 Mar 2026
+
+    ESL Pro League S23 Stage 1, Stage 2,
+        Legacy vs AURORA,
+    Game of Thrones (3 run) S1 at S3,
 */
 
 using CSTV_v1.Data;
@@ -16,7 +20,6 @@ builder.Services.AddSwaggerGen();
 
 // implementações
 builder.Services.AddScoped<IPlayerInterface, PlayerService>();
-builder.Services.AddScoped<IProfileInterface, ProfileService>();
 
 builder.Services.AddDbContext<AppDbContext>( options => 
 {
