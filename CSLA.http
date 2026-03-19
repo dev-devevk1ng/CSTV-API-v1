@@ -1,0 +1,6 @@
+@CSLA_HostAddress = http://localhost:5188
+
+GET {{CSLA_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

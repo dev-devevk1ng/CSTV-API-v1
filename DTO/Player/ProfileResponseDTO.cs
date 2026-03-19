@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CSTV_v1.DTO.Player
+namespace CSLA.DTO.Player
 {
     public class ProfileResponseDTO
     {

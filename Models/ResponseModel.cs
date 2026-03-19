@@ -2,7 +2,7 @@
     Date 4 Mar 2026
 */
 
-namespace CSTV_v1.Models
+namespace CSLA.Models
 {
     public class ResponseModel<T>
     {

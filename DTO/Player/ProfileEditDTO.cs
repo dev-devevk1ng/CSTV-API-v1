@@ -1,5 +1,5 @@
 /*
-    Date 9 Mar 2026
+    Date 18 Mar 2026
 */
 
 using System;
@@ -12,9 +12,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSLA.DTO.Player
 {
-    public class ProfileCreateDTO
+    public class ProfileEditDTO
     {
-        public required Guid PlayerId { get; set; }
+        public int Id { get; set; }
+        //public required Guid PlayerId { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public required DateTime Born { get; set; }

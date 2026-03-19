@@ -10,15 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CSTV_v1.Data;
+using CSLA.Data;
 using Microsoft.EntityFrameworkCore;
 
-using CSTV_v1.Models;
-using CSTV_v1.Models.Player;
-using CSTV_v1.DTO.Player;
+using CSLA.Models;
+using CSLA.Models.Player;
+using CSLA.DTO.Player;
 
 
-namespace CSTV_v1.Services.Player
+namespace CSLA.Services.Player
 {
     public class PlayerService : IPlayerInterface
     {
@@ -29,7 +29,7 @@ namespace CSTV_v1.Services.Player
         }
 
         // Player.Player
-        public async Task<ResponseModel<List<PlayerResponseDTO>>> GetPlayerList()
+        public async Task<ResponseModel<List<PlayerResponseDTO>>> GetAllPlayers()
         {
             ResponseModel<List<PlayerResponseDTO>> response = new ResponseModel<List<PlayerResponseDTO>>();
             try
@@ -165,7 +165,6 @@ namespace CSTV_v1.Services.Player
                 return response;
             }
         }
-   
         public async Task<ResponseModel<PlayerResponseDTO>> EditPlayer(PlayerEditDTO PlayerEditDTO)
         {
             // user envia Id, que sera usado para proucurar o player, e Nickname, que sera usado como novo Nickname.
@@ -204,7 +203,6 @@ namespace CSTV_v1.Services.Player
                 return response;
             }
         }
-        
         public async Task<ResponseModel<PlayerResponseDTO>> RemovePlayer(Guid PlayerId)
         {
             ResponseModel<PlayerResponseDTO> response = new ResponseModel<PlayerResponseDTO>();
@@ -242,113 +240,14 @@ namespace CSTV_v1.Services.Player
         }
 
         // Player.Profile
-        /*
-        public async Task<ResponseModel<List<ProfileResponseDTO>>> GetProfileList()
+        public async Task<ResponseModel<List<ProfileResponseDTO>>> GetAllProfiles()
         {
             ResponseModel<List<ProfileResponseDTO>> response = new ResponseModel<List<ProfileResponseDTO>>();
             try
             {
-            
-                var profiles = await _context.Profiles
+                var Profiles = await _context.PlayerProfile
                 .AsNoTracking()
-                .Select(p => new ProfileResponseDTO
-                {
-                    Id = p.Id,
-                    PlayerId = p.PlayerId,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Born = p.Born,
-                    Status = p.Status,
-                    ApproxTotalWinnings = p.ApproxTotalWinnings,
-                    YearCareerStart = p.YearCareerStart,
-                    YearCareerEnd = p.YearCareerEnd,
-                    CreatedAt = p.CreatedAt,
-                    PlayerNickname = p.Player!.Nickname
-                }).ToListAsync();
-
-                if (profiles == null)
-                {
-                    response.Message = "Player.Profile não encontrados!";
-                    return response;
-                }
-
-                response.Dados = profiles;
-                response.Message = "Player.Profile foram coletados!";
-                
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Message = ex.Message;
-                response.Status = false;
-                return response;
-            }
-        }
-
-        public async Task<ResponseModel<ProfileResponseDTO>> GetProfileById(int ProfileId)
-        {
-            ResponseModel<ProfileResponseDTO> response = new ResponseModel<ProfileResponseDTO>();
-            try
-            {
-                //var profile = await _context.Profiles.FirstOrDefaultAsync(x => x.Id == ProfileId);
-                
-                var profile = await _context.Profiles
-                .AsNoTracking()
-                .Select(p => new ProfileResponseDTO
-                {
-                    Id = p.Id,
-                    PlayerId = p.PlayerId,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Born = p.Born,
-                    Status = p.Status,
-                    ApproxTotalWinnings = p.ApproxTotalWinnings,
-                    YearCareerStart = p.YearCareerStart,
-                    YearCareerEnd = p.YearCareerEnd,
-                    CreatedAt = p.CreatedAt,
-                    PlayerNickname = p.Player!.Nickname
-                })
-                .FirstOrDefaultAsync(x => x.Id == ProfileId);      
-                
-                if (profile == null)
-                {
-                    response.Message = "Player.Profile não encontrado!";
-                    return response;
-                }
-
-                response.Dados = profile;
-                response.Message = "Player.Profile coletado!";
-                
-                return response;
-            }
-            catch (Exception ex)
-            {
-                response.Message = ex.Message;
-                response.Status = false;
-                return response;
-            }
-        }
-
-        public async Task<ResponseModel<List<ProfileResponseDTO>>> GetProfileByName(string FirstName, string LastName)
-        {
-            ResponseModel<List<ProfileResponseDTO>> response = new ResponseModel<List<ProfileResponseDTO>>();
-            try
-            {
-                var query = _context.Profiles.AsQueryable();
-
-                if (!string.IsNullOrEmpty(FirstName))
-                {
-                    query = query.Where(x => x.FirstName == FirstName);
-                }
-
-                if (!string.IsNullOrEmpty(LastName))
-                {
-                    query = query.Where(x => x.LastName == LastName);
-                }
-
-                var profiles = await query
-                .AsNoTracking()
-                .Select(p => new ProfileResponseDTO
+                .Select( p => new ProfileResponseDTO
                 {
                     Id = p.Id,
                     PlayerId = p.PlayerId,
@@ -364,13 +263,15 @@ namespace CSTV_v1.Services.Player
                 })
                 .ToListAsync();
 
-                if (profiles == null)
+                if ( Profiles == null || Profiles.Count == 0 )
                 {
-                    response.Message = "Player.Profile não encontrado!";
+                    response.Message = "Player.Profile não encontrado(s)";
+                    response.Dados = Profiles;
                     return response;
                 }
-                response.Dados = profiles;
-                response.Message = "Player.Profile coletado(s)!";
+
+                response.Dados = Profiles;
+                response.Message = "Player.Profile foram coletados!";
                 
                 return response;
             }
@@ -381,7 +282,101 @@ namespace CSTV_v1.Services.Player
                 return response;
             }
         }
+        public async Task<ResponseModel<ProfileResponseDTO>> GetProfileById(int ProfileId)
+        {
+            ResponseModel<ProfileResponseDTO> response = new ResponseModel<ProfileResponseDTO>();
+            try
+            {
+                var profile = await _context.PlayerProfile
+                .AsNoTracking()
+                .Select( p => new ProfileResponseDTO
+                {
+                    Id = p.Id,
+                    PlayerId = p.PlayerId,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Born = p.Born,
+                    Status = p.Status,
+                    ApproxTotalWinnings = p.ApproxTotalWinnings,
+                    YearCareerStart = p.YearCareerStart,
+                    YearCareerEnd = p.YearCareerEnd,
+                    CreatedAt = p.CreatedAt,
+                    PlayerNickname = p.Player!.Nickname
+                })
+                .FirstOrDefaultAsync( profile => profile.Id == ProfileId );      
+                
+                if ( profile == null )
+                {
+                    response.Message = "Player.Profile não encontrado!";
+                    response.Dados = profile;
+                    return response;
+                }
 
+                response.Dados = profile;
+                response.Message = "Player.Profile coletado!";
+                
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<List<ProfileResponseDTO>>> GetProfilesByNames(string FirstName, string LastName)
+        {
+            ResponseModel<List<ProfileResponseDTO>> response = new ResponseModel<List<ProfileResponseDTO>>();
+            try
+            {
+                var query = _context.PlayerProfile.AsQueryable();
+
+                if (!string.IsNullOrEmpty(FirstName))
+                {
+                    query = query.Where(x => x.FirstName == FirstName);
+                }
+
+                if (!string.IsNullOrEmpty(LastName))
+                {
+                    query = query.Where(x => x.LastName == LastName);
+                }
+
+                var Profiles = await query
+                .AsNoTracking()
+                .Select( p => new ProfileResponseDTO
+                {
+                    Id = p.Id,
+                    PlayerId = p.PlayerId,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Born = p.Born,
+                    Status = p.Status,
+                    ApproxTotalWinnings = p.ApproxTotalWinnings,
+                    YearCareerStart = p.YearCareerStart,
+                    YearCareerEnd = p.YearCareerEnd,
+                    CreatedAt = p.CreatedAt,
+                    PlayerNickname = p.Player!.Nickname
+                })
+                .ToListAsync();
+
+                if ( Profiles == null )
+                {
+                    response.Message = "Player.Profile não encontrado!";
+                    response.Dados = Profiles;
+                    return response;
+                }
+
+                response.Dados = Profiles;
+                response.Message = "Player.Profile coletado(s)!";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
         public async Task<ResponseModel<ProfileResponseDTO>> CreateProfile(ProfileCreateDTO CreateDTO)
         {
             ResponseModel<ProfileResponseDTO> response = new ResponseModel<ProfileResponseDTO>();
@@ -400,13 +395,13 @@ namespace CSTV_v1.Services.Player
                     CreatedAt = DateTime.UtcNow
                };
 
-                _context.Profiles.Add(Profile);
+                _context.PlayerProfile.Add(Profile);
                 await _context.SaveChangesAsync();
 
-                var ProfileResponse = await _context.Profiles
+                var ProfileResponse = await _context.PlayerProfile
                 .AsNoTracking()
-                .Where(p => p.Id == Profile.Id)
-                .Select(p => new ProfileResponseDTO
+                .Where( p => p.Id == Profile.Id )
+                .Select( p => new ProfileResponseDTO
                 {
                     Id = p.Id,
                     PlayerId = p.PlayerId,
@@ -435,7 +430,111 @@ namespace CSTV_v1.Services.Player
                 return response;
             }
         }
-        */
+        public async Task<ResponseModel<ProfileResponseDTO>> EditProfile(ProfileEditDTO EditDTO)
+        {
+            ResponseModel<ProfileResponseDTO> response = new ResponseModel<ProfileResponseDTO>();
+            try
+            {
+                var Profile = await _context.PlayerProfile
+                .Include(p => p.Player) // para pegar o nickname de player.player
+                .Where( p => p.Id == EditDTO.Id )
+                .FirstOrDefaultAsync();
 
+                if ( Profile == null )
+                {
+                    response.Message = "Player.Profile nao encontrado!";
+                    return response;
+                }
+
+                Profile.FirstName = EditDTO.FirstName;
+                Profile.LastName = EditDTO.LastName;
+                Profile.Born = EditDTO.Born;
+                Profile.Status = EditDTO.Status;
+                Profile.ApproxTotalWinnings = EditDTO.ApproxTotalWinnings;
+                Profile.YearCareerStart = EditDTO.YearCareerStart;
+                Profile.YearCareerEnd = EditDTO.YearCareerEnd;
+            
+                await _context.SaveChangesAsync();
+
+                /* outra alternativa para pegar o nickname
+                var playerNickname = await _context.PlayerPlayer
+                .AsNoTracking()
+                .Where(x => x.Id == Profile.PlayerId)
+                .Select(x => x.Nickname)
+                .FirstOrDefaultAsync() ?? string.Empty;
+                */
+
+                ProfileResponseDTO ProfileResponse = new ProfileResponseDTO
+                {
+                    Id = Profile.Id,
+                    PlayerId = Profile.PlayerId,
+                    FirstName = Profile.FirstName,
+                    LastName = Profile.LastName,
+                    Born = Profile.Born,
+                    Status = Profile.Status,
+                    ApproxTotalWinnings = Profile.ApproxTotalWinnings,
+                    YearCareerStart = Profile.YearCareerStart,
+                    YearCareerEnd = Profile.YearCareerEnd,
+                    PlayerNickname = Profile.Player?.Nickname ?? "",
+                };
+        
+                response.Message = "Player.Profile editado!";
+                response.Dados = ProfileResponse;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<ProfileResponseDTO>> RemoveProfile(int ProfileId)
+        {
+            ResponseModel<ProfileResponseDTO> response = new ResponseModel<ProfileResponseDTO>();
+            try
+            {
+                var Profile = await _context.PlayerProfile            
+                .Where( p => p.Id == ProfileId )
+                .FirstOrDefaultAsync();
+
+                if ( Profile == null )
+                {
+                    response.Message = "Player.Profile nao encontrado!";
+                    return response;
+                }
+             
+                ProfileResponseDTO ProfileResponse = new ProfileResponseDTO
+                {
+                    Id = Profile.Id,
+                    PlayerId = Profile.PlayerId,
+                    FirstName = Profile.FirstName,
+                    LastName = Profile.LastName,
+                    Born = Profile.Born,
+                    Status = Profile.Status,
+                    ApproxTotalWinnings = Profile.ApproxTotalWinnings,
+                    YearCareerStart = Profile.YearCareerStart,
+                    YearCareerEnd = Profile.YearCareerEnd,
+                    PlayerNickname = Profile.Player?.Nickname ?? "",
+                };
+
+                _context.Remove(Profile);
+                await _context.SaveChangesAsync();
+        
+                response.Message = "Player.Profile deletado!";
+                response.Dados = ProfileResponse;
+
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
     }
 }

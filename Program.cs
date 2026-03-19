@@ -2,12 +2,14 @@
     Date 2 Mar 2026
 
     ESL Pro League S23 Stage 1, Stage 2,
-        Legacy vs AURORA, Legacy vs NAVI, FURIA vs PAIN
-    Game of Thrones (3 run) S1 at S4,
+        Legacy vs AURORA, Legacy vs NAVI, FURIA vs PAIN, FURIA vs Astralis (sonho estranho)
+    Game of Thrones (3 run) S1 at S7,
+    fernandemiguels
+        The Boys S1 at S3, 
 */
 
-using CSTV_v1.Data;
-using CSTV_v1.Services.Player;
+using CSLA.Data;
+using CSLA.Services.Player;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

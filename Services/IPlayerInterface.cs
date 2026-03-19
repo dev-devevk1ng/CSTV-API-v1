@@ -8,28 +8,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using CSTV_v1.Models;
-using CSTV_v1.Models.Player;
-using CSTV_v1.DTO.Player;
+using CSLA.Models;
+using CSLA.Models.Player;
+using CSLA.DTO.Player;
 
-namespace CSTV_v1.Services.Player
+namespace CSLA.Services.Player
 {
     public interface IPlayerInterface
     {
         // Player.Player
-        Task<ResponseModel<List<PlayerResponseDTO>>> GetPlayerList();
+        Task<ResponseModel<List<PlayerResponseDTO>>> GetAllPlayers();
         Task<ResponseModel<PlayerResponseDTO>> GetPlayerById(Guid PlayerId);
         Task<ResponseModel<List<PlayerResponseDTO>>> GetPlayersByNickname(string Nickname);
-        Task<ResponseModel<PlayerResponseDTO>> CreatePlayer(PlayerCreateDTO PlayerDTO);
-        Task<ResponseModel<PlayerResponseDTO>> EditPlayer(PlayerEditDTO PlayerEditDTO);
+        Task<ResponseModel<PlayerResponseDTO>> CreatePlayer(PlayerCreateDTO CreateDTO);
+        Task<ResponseModel<PlayerResponseDTO>> EditPlayer(PlayerEditDTO EditDTO);
         Task<ResponseModel<PlayerResponseDTO>> RemovePlayer(Guid PlayerId);
         
         // Player.Profile
-        /*
-        Task<ResponseModel<List<ProfileResponseDTO>>> GetProfileList();
+        Task<ResponseModel<List<ProfileResponseDTO>>> GetAllProfiles();
         Task<ResponseModel<ProfileResponseDTO>> GetProfileById(int ProfileId);
-        Task<ResponseModel<List<ProfileResponseDTO>>> GetProfileByName(string FirstName, string LastName);
+        Task<ResponseModel<List<ProfileResponseDTO>>> GetProfilesByNames(string FirstName, string LastName);
         Task<ResponseModel<ProfileResponseDTO>> CreateProfile(ProfileCreateDTO CreateDTO);
-        */
+        Task<ResponseModel<ProfileResponseDTO>> EditProfile(ProfileEditDTO EditDTO);
+        Task<ResponseModel<ProfileResponseDTO>> RemoveProfile(int ProfileId);
     }
 }

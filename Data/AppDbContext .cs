@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-using CSTV_v1.Models.Player;
+using CSLA.Models.Player;
 
-namespace CSTV_v1.Data
+namespace CSLA.Data
 {
     public partial class AppDbContext : DbContext
     {

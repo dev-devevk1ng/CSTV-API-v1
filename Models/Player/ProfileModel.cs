@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CSTV_v1.Models.Player
+namespace CSLA.Models.Player
 {
     [Table("Profile", Schema = "Player")]
     public class ProfileModel

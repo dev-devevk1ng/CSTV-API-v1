@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CSTV_v1.DTO.Player
+namespace CSLA.DTO.Player
 {
     public class PlayerResponseDTO
     {

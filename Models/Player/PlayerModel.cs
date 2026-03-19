@@ -5,7 +5,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CSTV_v1.Models.Player
+namespace CSLA.Models.Player
 {
     [Table("Player", Schema = "Player")]
     public class PlayerModel
