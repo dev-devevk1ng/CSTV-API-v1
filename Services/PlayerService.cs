@@ -397,24 +397,23 @@ namespace CSLA.Services.Player
                 _context.PlayerProfile.Add(Profile);
                 await _context.SaveChangesAsync();
 
-                var ProfileResponse = await _context.PlayerProfile
+                var Player = await _context.PlayerPlayer
                 .AsNoTracking()
-                .Where( p => p.Id == Profile.Id )
-                .Select( p => new ProfileResponseDTO
+                .FirstOrDefaultAsync(p => p.Id == Profile.PlayerId);
+
+                var ProfileResponse = new ProfileResponseDTO
                 {
-                    Id = p.Id,
-                    PlayerId = p.PlayerId,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Born = p.Born,
-                    Status = p.Status,
-                    ApproxTotalWinnings = p.ApproxTotalWinnings,
-                    YearCareerStart = p.YearCareerStart,
-                    YearCareerEnd = p.YearCareerEnd,
-                    CreatedAt = p.CreatedAt,
-                    PlayerNickname = p.Player!.Nickname
-                })
-                .FirstOrDefaultAsync();
+                    PlayerId = Profile.PlayerId,
+                    FirstName = Profile.FirstName,
+                    LastName = Profile.LastName,
+                    Born = Profile.Born,
+                    Status = Profile.Status,
+                    ApproxTotalWinnings = Profile.ApproxTotalWinnings,
+                    YearCareerStart = Profile.YearCareerStart,
+                    YearCareerEnd = Profile.YearCareerEnd,
+                    CreatedAt = Profile.CreatedAt,
+                    PlayerNickname = Player!.Nickname
+                };
         
                 response.Message = "Player.Profile criado com sucesso!";
                 response.Dados = ProfileResponse;
@@ -621,23 +620,12 @@ namespace CSLA.Services.Player
                 _context.PlayerNativeName.Add(NativeName);
                 await _context.SaveChangesAsync();
 
-                var NativeNameResponse = await _context.PlayerNativeName
-                .AsNoTracking()
-                .Where( x => x.PlayerId == CreateDTO.PlayerId )
-                .Select( x => new NativeNameResponseDTO 
+                var NativeNameResponse = new NativeNameResponseDTO 
                 {
-                    PlayerId = x.PlayerId,
-                    NativeFirstName = x.NativeFirstName,
-                    NativeLastName = x.NativeLastName
-                })
-                .FirstOrDefaultAsync();
-
-                if ( NativeNameResponse == null )
-                {
-                    response.Dados = null;
-                    response.Message = "Player.NativeName nao encontrado";
-                    return response;
-                }
+                    PlayerId = NativeName.PlayerId,
+                    NativeFirstName = NativeName.NativeFirstName,
+                    NativeLastName = NativeName.NativeLastName,
+                };          
 
                 response.Dados = NativeNameResponse;
                 response.Message = "Player.NativeName criado com sucesso!";
@@ -714,6 +702,186 @@ namespace CSLA.Services.Player
 
                 response.Dados = NativeNameResponse;
                 response.Message = "Player.NativeName deletado com sucesso";
+                return response;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+
+        // Player.AlternateID
+        public async Task<ResponseModel<List<AlternateIDResponseDTO>>> GetAllAlternateIDs()
+        {
+            ResponseModel<List<AlternateIDResponseDTO>> response = new ResponseModel<List<AlternateIDResponseDTO>>();
+            try
+            {
+                var AlternateIDs = await _context.PlayerAlternateID
+                .AsNoTracking()               
+                .Select( alternateId => new AlternateIDResponseDTO
+                {
+                    Id = alternateId.Id,
+                    PlayerId = alternateId.PlayerId,     
+                    AlternateID = alternateId.AlternateID,      
+                    PlayerNickname = alternateId.Player!.Nickname
+                })
+                .ToListAsync();
+                
+                if ( AlternateIDs == null || AlternateIDs.Count == 0 )
+                {
+                    response.Dados = null;
+                    response.Message = "AlternateIDs nao encontrado(s)";
+                    return response;
+                }
+
+                response.Dados = AlternateIDs;
+                response.Message = "AlternateIDs encontrado(s)";
+                return response;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<List<AlternateIDResponseDTO>>> GetAlternateIDsByPlayerId(Guid PlayerId)
+        {
+            ResponseModel<List<AlternateIDResponseDTO>> response = new ResponseModel<List<AlternateIDResponseDTO>>();
+            try
+            {
+                var AlternateIDs = await _context.PlayerAlternateID
+                .AsNoTracking()  
+                .Where( altId => altId.PlayerId == PlayerId )             
+                .Select( alternateId => new AlternateIDResponseDTO
+                {
+                    Id = alternateId.Id,
+                    PlayerId = alternateId.PlayerId,     
+                    AlternateID = alternateId.AlternateID,      
+                    PlayerNickname = alternateId.Player!.Nickname
+                })
+                .ToListAsync();
+                
+                if ( AlternateIDs == null || AlternateIDs.Count == 0 )
+                {
+                    response.Dados = null;
+                    response.Message = "AlternateIDs nao encontrado(s)";
+                    return response;
+                }
+
+                response.Dados = AlternateIDs;
+                response.Message = "AlternateID encontrado com sucesso";
+                return response;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<AlternateIDResponseDTO>> CreateAlternateID(AlternateIDCreateDTO CreateDTO)
+        {
+            ResponseModel<AlternateIDResponseDTO> response = new ResponseModel<AlternateIDResponseDTO>();
+            try
+            {
+                var AlternateID = new AlternateIDModel
+                {
+                    PlayerId = CreateDTO.PlayerId,
+                    AlternateID = CreateDTO.AlternateID,
+                };
+
+               _context.PlayerAlternateID.Add(AlternateID);
+               await _context.SaveChangesAsync();
+ 
+                var AlternateIDResponse = new AlternateIDResponseDTO
+                {
+                    Id = AlternateID.Id,
+                    PlayerId = AlternateID.PlayerId,
+                    AlternateID = AlternateID.AlternateID,
+                    PlayerNickname = AlternateID.Player?.Nickname,
+                };
+                
+                response.Dados = AlternateIDResponse;
+                response.Message = "AlternateID criado com sucesso";
+                return response;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<AlternateIDResponseDTO>> EditAlternateID(AlternateIDEditDTO EditDTO)
+        {
+            ResponseModel<AlternateIDResponseDTO> response = new ResponseModel<AlternateIDResponseDTO>();
+            try
+            {
+                var AlternateID = await _context.PlayerAlternateID
+                .Where( altID => altID.Id == EditDTO.Id )
+                .FirstOrDefaultAsync();
+
+                if ( AlternateID == null )
+                {
+                    response.Status = false;
+                    response.Message = "AlternateID não encontrado";
+                    return response;
+                }
+
+                AlternateID.AlternateID = EditDTO.AlternateID;
+                await _context.SaveChangesAsync();
+ 
+                var AlternateIDResponse = new AlternateIDResponseDTO
+                {
+                    Id = AlternateID!.Id,
+                    PlayerId = AlternateID.PlayerId,
+                    AlternateID = AlternateID.AlternateID,
+                    PlayerNickname = AlternateID.Player?.Nickname,
+                };
+                
+                response.Dados = AlternateIDResponse;
+                response.Message = "AlternateID editado com sucesso";
+                return response;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<AlternateIDResponseDTO>> RemoveAlternateID(int Id)
+        {
+            ResponseModel<AlternateIDResponseDTO> response = new ResponseModel<AlternateIDResponseDTO>();
+            try
+            {
+                var AlternateID = await _context.PlayerAlternateID
+                .Where( altID => altID.Id == Id )
+                .FirstOrDefaultAsync();
+
+                if ( AlternateID == null )
+                {
+                    response.Status = false;
+                    response.Message = "AlternateID não encontrado";
+                    return response;
+                }
+
+                _context.PlayerAlternateID.Remove(AlternateID);
+                await _context.SaveChangesAsync();
+ 
+                var AlternateIDResponse = new AlternateIDResponseDTO
+                {
+                    Id = AlternateID!.Id,
+                    PlayerId = AlternateID.PlayerId,
+                    AlternateID = AlternateID.AlternateID,
+                    PlayerNickname = AlternateID.Player?.Nickname,
+                };
+                
+                response.Dados = AlternateIDResponse;
+                response.Message = "AlternateID removido com sucesso";
                 return response;
             }
             catch (System.Exception ex)

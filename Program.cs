@@ -8,7 +8,7 @@
             
     Gaules
         Amoung Us Ep.1 at Ep.11
-        Sons Of The Forest Ep.1 at Ep.2
+        Sons Of The Forest Ep.1 at Ep.5
     Game of Thrones (3 run) S1 at S7,
     fernandemiguels
         The Boys S1 at S4, 

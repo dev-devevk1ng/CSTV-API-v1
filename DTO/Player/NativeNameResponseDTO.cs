@@ -13,5 +13,6 @@ namespace CSLA.DTO.Player
         public required Guid PlayerId { get; set; }
         public required string NativeFirstName { get; set; }
         public required string NativeLastName { get; set; }
+        
     }
 }

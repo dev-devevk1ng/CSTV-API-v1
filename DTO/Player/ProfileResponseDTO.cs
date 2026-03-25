@@ -14,7 +14,7 @@ namespace CSLA.DTO.Player
         public Guid PlayerId { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
-        public DateTime Born { get; set; }
+        public DateOnly Born { get; set; }
         public required string Status { get; set; }
         public decimal ApproxTotalWinnings { get; set; }
         public int YearCareerStart { get; set; }

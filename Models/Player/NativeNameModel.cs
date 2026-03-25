@@ -15,10 +15,19 @@ namespace CSLA.Models.Player
     public class NativeNameModel
     {
         [Key]
-        public required Guid PlayerId { get; set; }
-        [MaxLength(40)]
+        [Required]
+        public Guid PlayerId { get; set; }
+
+        [MaxLength(30)]
+        [Required]
         public required string NativeFirstName { get; set; }
-        [MaxLength(40)]
+
+        [MaxLength(30)]
+        [Required]
         public required string NativeLastName { get; set; }
+
+        //🔹 Relacionamento 1:1, Navegação
+        [ForeignKey("PlayerId")]
+        public PlayerModel? Player { get; set; }
     }
 }

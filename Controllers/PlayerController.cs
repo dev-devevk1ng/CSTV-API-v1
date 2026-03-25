@@ -128,7 +128,6 @@ namespace CSLA.Controllers.Player
             var response = await _playerInterface.GetAllNativeNames();
             return Ok(response);
         }
-
         [Tags("NativeName")]
         [HttpGet("GetNativeNameByPlayerId")] 
         public async Task<ActionResult<ResponseModel<NativeNameResponseDTO>>> GetNativeNameByPlayerId(Guid PlayerId)
@@ -136,7 +135,6 @@ namespace CSLA.Controllers.Player
             var response = await _playerInterface.GetNativeNameByPlayerId(PlayerId);
             return Ok(response);
         }
-
         [Tags("NativeName")]
         [HttpPost("CreateNativeName")] 
         public async Task<ActionResult<ResponseModel<NativeNameResponseDTO>>> CreateNativeName(NativeNameCreateDTO CreateDTO)
@@ -144,7 +142,6 @@ namespace CSLA.Controllers.Player
             var response = await _playerInterface.CreateNativeName(CreateDTO);
             return Ok(response);
         }
-
         [Tags("NativeName")]
         [HttpPut("EditNativeName")] 
         public async Task<ActionResult<ResponseModel<NativeNameResponseDTO>>> EditNativeName(NativeNameEditDTO EditDTO)
@@ -152,7 +149,6 @@ namespace CSLA.Controllers.Player
             var response = await _playerInterface.EditNativeName(EditDTO);
             return Ok(response);
         }
-
         [Tags("NativeName")]
         [HttpDelete("DeleteNativeName")] 
         public async Task<ActionResult<ResponseModel<NativeNameResponseDTO>>> DeleteNativeName(Guid PlayerId)
@@ -161,5 +157,41 @@ namespace CSLA.Controllers.Player
             return Ok(response);
         }
         
+        // Player.AlternateID
+        [Tags("AlternateID")]
+        [HttpGet("GetAllAlternateIDs")] 
+        public async Task<ActionResult<ResponseModel<List<AlternateIDResponseDTO>>>> GetAllAlternateIDs()
+        {
+            var response = await _playerInterface.GetAllAlternateIDs();
+            return Ok(response);
+        }
+        [Tags("AlternateID")]
+        [HttpGet("GetAlternateIDsByPlayerId")] 
+        public async Task<ActionResult<ResponseModel<List<AlternateIDResponseDTO>>>> GetAlternateIDsByPlayerId(Guid PlayerId)
+        {
+            var response = await _playerInterface.GetAlternateIDsByPlayerId(PlayerId);
+            return Ok(response);
+        }
+        [Tags("AlternateID")]
+        [HttpPost("CreateAlternateID")] 
+        public async Task<ActionResult<ResponseModel<AlternateIDResponseDTO>>> CreateAlternateID(AlternateIDCreateDTO CreateDTO)
+        {
+            var response = await _playerInterface.CreateAlternateID(CreateDTO);
+            return Ok(response);
+        }
+        [Tags("AlternateID")]
+        [HttpPut("EditAlternateID")] 
+        public async Task<ActionResult<ResponseModel<AlternateIDResponseDTO>>> EditAlternateID(AlternateIDEditDTO EditDTO)
+        {
+            var response = await _playerInterface.EditAlternateID(EditDTO);
+            return Ok(response);
+        }
+        [Tags("AlternateID")]
+        [HttpDelete("RemoveAlternateID")] 
+        public async Task<ActionResult<ResponseModel<AlternateIDResponseDTO>>> RemoveAlternateID(int Id)
+        {
+            var response = await _playerInterface.RemoveAlternateID(Id);
+            return Ok(response);
+        }
     }
 }

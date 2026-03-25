@@ -27,7 +27,7 @@ namespace CSLA.Models.Player
         public required string LastName { get; set; }
 
         [Required]
-        public DateTime Born { get; set; }
+        public DateOnly Born { get; set; }
 
         [Required]
         [StringLength(15)]
@@ -45,8 +45,8 @@ namespace CSLA.Models.Player
         [Required]
         public DateTime CreatedAt { get; set; }
 
-        // Navigation property
+        //🔹 Relacionamento 1:1, Navegação
         [ForeignKey("PlayerId")]
-        public virtual PlayerModel? Player { get; set; }
+        public PlayerModel? Player { get; set; }
     }
 }

@@ -40,5 +40,10 @@ namespace CSLA.Services.Player
         Task<ResponseModel<NativeNameResponseDTO>> DeleteNativeName(Guid PlayerId);
 
         // Player.AlternateId
+        Task<ResponseModel<List<AlternateIDResponseDTO>>> GetAllAlternateIDs();
+        Task<ResponseModel<List<AlternateIDResponseDTO>>> GetAlternateIDsByPlayerId(Guid PlayerId);
+        Task<ResponseModel<AlternateIDResponseDTO>> CreateAlternateID(AlternateIDCreateDTO CreateDTO);
+        Task<ResponseModel<AlternateIDResponseDTO>> EditAlternateID(AlternateIDEditDTO EditDTO);
+        Task<ResponseModel<AlternateIDResponseDTO>> RemoveAlternateID(int Id);
     }
 }

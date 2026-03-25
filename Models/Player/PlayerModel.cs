@@ -19,5 +19,13 @@ namespace CSLA.Models.Player
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // 🔹 Relacionamento 1:1
+        public ProfileModel? Profile { get; set; }
+        // 🔹 Relacionamento 1:1
+        public NativeNameModel? NativeName { get; set; }
+        // 🔹 Relacionamento 1:N
+        public ICollection<AlternateIDModel> AlternateIDs { get; set; } = new List<AlternateIDModel>();
+
     }
 }
